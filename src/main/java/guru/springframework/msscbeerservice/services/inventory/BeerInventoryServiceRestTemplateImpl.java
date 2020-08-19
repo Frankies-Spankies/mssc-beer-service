@@ -35,15 +35,21 @@ public class BeerInventoryServiceRestTemplateImpl implements BeerInventoryServic
         this.restTemplate = restTemplateBuilder.build();
     }
 
+    //Esta pensada como interfaz para quiza ocuparla como servicio
     @Override
     public Integer getOnhandInventory(UUID beerId) {
 
         log.debug("Calling Inventory Service");
 
+        //Exchange cubre una peticion mas generica, i.e si las configuraciones que queremos en el request no estan predefinidas
+        //en el restTemplate, con el metodo exchange se le puede pasar cabeceras, una entidad y el tipo de peticion al request
+        //que se va construir
+        //beerId es el pathvariable que hace bind con el beerId de la URL
         ResponseEntity<List<BeerInventoryDto>> responseEntity = restTemplate
                 .exchange(beerInventoryServiceHost + INVENTORY_PATH, HttpMethod.GET, null,
                         new ParameterizedTypeReference<List<BeerInventoryDto>>(){}, (Object) beerId);
 
+        //El negocio se mide por cantidad de cerveza
         //sum from inventory list
         Integer onHand = Objects.requireNonNull(responseEntity.getBody())
                 .stream()

@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Created by jt on 2019-06-08.
  */
+//Extiende la funcionalidad del mapper generada por mapstruct
 public abstract class BeerMapperDecorator implements BeerMapper {
     private BeerInventoryService beerInventoryService;
+    //El mapper original generado por mapstruct
     private BeerMapper mapper;
 
     @Autowired
@@ -33,4 +35,10 @@ public abstract class BeerMapperDecorator implements BeerMapper {
     public Beer beerDtoToBeer(BeerDto beerDto) {
         return mapper.beerDtoToBeer(beerDto);
     }
+
+    @Override
+    public BeerDto beerToBeerDtoWithoutQH(Beer beer) {
+        return mapper.beerToBeerDto(beer);
+    }
+
 }
