@@ -1,8 +1,11 @@
 package guru.springframework.msscbeerservice.bootstrap;
 
+import guru.springframework.msscbeerservice.domain.Beer;
 import guru.springframework.msscbeerservice.repositories.BeerRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
@@ -27,6 +30,43 @@ public class BeerLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         //using data.sql file now
-        //   loadBeerObjects();
+        loadBeerObjects();
+
+    }
+
+    private void loadBeerObjects() {
+        Beer beer1 = Beer.builder()
+                .beerName("Mango Bobs")
+                .beerStyle("IPA")
+                .minOnHand(12)
+                .quantityToBrew(200)
+                .price(new BigDecimal(12.95))
+                .upc(BEER_1_UPC)
+                .version(1L)
+                .build();
+
+        Beer beer2 = Beer.builder()
+                .beerName("Galaxy Cat")
+                .beerStyle("PALE_ALE")
+                .minOnHand(12)
+                .quantityToBrew(200)
+                .price(new BigDecimal(12.95))
+                .upc(BEER_2_UPC)
+                .version(1L)
+                .build();
+
+        Beer beer3 = Beer.builder()
+                .beerName("Pinball Porter")
+                .beerStyle("PORTER")
+                .minOnHand(12)
+                .quantityToBrew(200)
+                .price(new BigDecimal(12.95))
+                .upc(BEER_3_UPC)
+                .version(1L)
+                .build();
+
+        beerRepository.save(beer1);
+        beerRepository.save(beer2);
+        beerRepository.save(beer3);
     }
 }

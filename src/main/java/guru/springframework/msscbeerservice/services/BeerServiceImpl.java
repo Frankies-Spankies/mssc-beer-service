@@ -101,6 +101,6 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public BeerDto getByUpc(String upc) {
         System.out.println("Upc call");
-        return beerMapper.beerToBeerDto(beerRepository.findByUpc(upc));
+        return beerMapper.beerToBeerDtoWithoutQH(beerRepository.findByUpc(upc));
     }
 }
