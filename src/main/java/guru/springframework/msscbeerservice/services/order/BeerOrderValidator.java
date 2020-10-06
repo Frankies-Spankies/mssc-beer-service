@@ -13,14 +13,17 @@ public class BeerOrderValidator {
 
     private final BeerRepository beerRepository;
 
-    public Boolean validateOrder(BeerOrderDto beerOrderDto) {
-        AtomicInteger beerNotFound = new AtomicInteger();
-        beerOrderDto.getBeerOrderLines().forEach(beerOrderLineDto -> {
-            if (!beerRepository.existsById(beerOrderLineDto.getBeerId())) {
-                beerNotFound.incrementAndGet();
+    public Boolean validateOrder(BeerOrderDto beerOrder){
+
+        AtomicInteger beersNotFound = new AtomicInteger();
+
+        beerOrder.getBeerOrderLines().forEach(orderline -> {
+            if(beerRepository.findByUpc(orderline.getUpc()) == null){
+                beersNotFound.incrementAndGet();
             }
         });
 
-        return beerNotFound.get()>0;
+        return beersNotFound.get() == 0;
     }
+
 }

@@ -20,17 +20,17 @@ import java.util.concurrent.atomic.AtomicReference;
 @Component
 public class BeerOrderValidationListener {
 
+    private final BeerOrderValidator validator;
     private final JmsTemplate jmsTemplate;
-    private final BeerOrderValidator beerOrderValidator;
-
 
     @JmsListener(destination = JmsConfig.VALIDATE_ORDER_QUEUE)
-    public void listen(@Payload ValidateOrderRequest validateOrderRequest, @Headers MessageHeaders headers, Message message) {
+    public void listen(ValidateOrderRequest validateOrderRequest){
+        Boolean isValid = validator.validateOrder(validateOrderRequest.getBeerOrderDto());
+
         jmsTemplate.convertAndSend(JmsConfig.VALIDATE_ORDER_RESPONSE_QUEUE,
                 ValidateOrderResult.builder()
-                        .isValid(beerOrderValidator.validateOrder(validateOrderRequest.getBeerOrderDto()))
-                        .orderId(validateOrderRequest.getBeerOrderDto().getId())
-                        .build());
-
+                    .isValid(isValid)
+                    .orderId(validateOrderRequest.getBeerOrderDto().getId())
+                    .build());
     }
 }
