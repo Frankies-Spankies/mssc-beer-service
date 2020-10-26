@@ -25,8 +25,9 @@ public class BrewingService {
     private final BeerMapper beerMapper;
 
 
+    //Metodos deben ser publicos para que pueda trabajar zipkin
     @Scheduled(fixedRate = 5000)
-    private void checkForLowInventory(){
+    public void checkForLowInventory(){
         List<Beer> beers = beerRepository.findAll();
         beers.forEach(beer -> {
             Integer invQOH = beerInventoryService.getOnhandInventory(beer.getId());
